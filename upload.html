@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    background-color: #E8F7FE;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar{
+    margin-top: -2.5vh ;
+    padding: 0;
+    width: 100%;
+}
+
+ul{
+    list-style: none;
+    display: flex;
+    background-color: #1a5ca1;
+    height: 5vh;
+    align-items: center;
+    padding-left: 2vh;
+    width: 100%;
+}
+
+ul li{
+    padding-right: 10vh;
+}
+
+a{
+    text-decoration: none !important;
+    color: white !important;
+}
+
+a:hover{
+    color: black !important;
+}
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+</style>
+<body>
+    <div class="navbar">
+        <ul>
+            <li class="listitems"><a href="student_dashboard.html">Home</a></li>
+            <li class="listitems"><a href="companylist.php">Company List</a></li>
+            <li class="listitems"><a href="upload.html">Upload</a></li>
+            <li class="listitems"><a href="logout.php">Logout</a></li>
+        </ul>
+    </div>
+    <h1>Upload Documents</h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="offer_letter">Offer Letter:</label>
+            <input type="file" name="offer_letter" id="offer_letter" required>
+        </div>
+        <div class="form-group">
+            <label for="completion_letter">Completion Letter:</label>
+            <input type="file" name="completion_letter" id="completion_letter" required>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Upload">
+        </div>
+    </form>
+</body>
+</html>
