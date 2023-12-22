@@ -97,6 +97,9 @@
     <ul>
         <li class="listitems"><a href="admin_dashboard.html">Home</a></li>
         <li class="listitems"><a href="admin_company_list.php">Company List</a></li>
+        <!-- <li class="listitems"><a href="admin_letter.php">Student Documents</a></li> -->
+        <li class="listitems"><a href="admin_offer_letter.php">Student Offer Letter</a></li>
+        <li class="listitems"><a href="admin_completion_letter.php">Student Completion Letter</a></li>
         <!-- <li class="listitems"><a href="upload.html">Upload</a></li> -->
         <li class="listitems"><a href="logout.php">Logout</a></li>
     </ul>

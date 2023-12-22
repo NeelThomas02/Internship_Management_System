@@ -1,9 +1,46 @@
+<?php
+// Assuming you have the user's name stored in a session variable named 'username'
+session_start();
+$loggedInUser = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest'; // Set to 'Guest' if not logged in
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+$(document).ready(function() {
+    $('form').submit(function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+            type: 'POST',
+            url: 'upload_letter.php',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Handle success, show toast message or perform any action
+                showToast("Documents uploaded successfully!");
+            },
+            error: function() {
+                // Handle errors, show toast message or perform any action
+                showToast("Error uploading documents.");
+            }
+        });
+    });
+
+    function showToast(message) {
+        // Replace this with your preferred method of displaying a toast
+        alert(message); // For demonstration, using alert as a placeholder
+    }
+});
+</script>
+
 </head>
 <style>
     body {
@@ -83,21 +120,22 @@ input[type="submit"]:hover {
 <body>
     <div class="navbar">
         <ul>
-            <li class="listitems"><a href="student_dashboard.html">Home</a></li>
+            <li class="listitems"><a href="student_dashboard.php">Home</a></li>
             <li class="listitems"><a href="companylist.php">Company List</a></li>
-            <li class="listitems"><a href="upload.html">Upload</a></li>
+            <li class="listitems"><a href="letter.php">Upload</a></li>
             <li class="listitems"><a href="logout.php">Logout</a></li>
+            <li style="margin-left: auto; color: white;"><span><?php echo $loggedInUser; ?></span></li>
         </ul>
     </div>
     <h1>Upload Documents</h1>
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="upload_letter.php" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="offer_letter">Offer Letter:</label>
             <input type="file" name="offer_letter" id="offer_letter" required>
         </div>
         <div class="form-group">
             <label for="completion_letter">Completion Letter:</label>
-            <input type="file" name="completion_letter" id="completion_letter" required>
+            <input type="file" name="completion_letter" id="completion_letter" >
         </div>
         <div class="form-group">
             <input type="submit" value="Upload">

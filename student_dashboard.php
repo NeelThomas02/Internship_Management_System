@@ -1,3 +1,8 @@
+<?php
+// Assuming you have the user's name stored in a session variable named 'username'
+session_start();
+$loggedInUser = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest'; // Set to 'Guest' if not logged in
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,12 +110,13 @@ button[type="submit"]:hover {
         <ul>
             <li class="listitems"><a href="student_dashboard.php">Home</a></li>
             <li class="listitems"><a href="companylist.php">Company List</a></li>
-            <li class="listitems"><a href="upload.html">Upload</a></li>
+            <li class="listitems"><a href="letter.php">Upload</a></li>
             <li class="listitems"><a href="logout.php">Logout</a></li>
+            <li style="margin-left: auto; color: white;"><span><?php echo $loggedInUser; ?></span></li>
         </ul>
     </div>
     <?php
-session_start();
+// session_start();
 
 // Check if the message session variable exists and display it
 if (isset($_SESSION['message'])) {
