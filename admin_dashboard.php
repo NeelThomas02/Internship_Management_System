@@ -134,14 +134,20 @@ $sql = "SELECT * FROM internship_form";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-    $filledForms = $result->num_rows;
-    $remainingForms = $totalStudents - $filledForms;
+    $filledFormsQuery = "SELECT COUNT(*) as filledForms FROM internship_form";
+$filledFormsResult = $conn->query($filledFormsQuery);
+$filledFormsRow = $filledFormsResult->fetch_assoc();
+$filledForms = $filledFormsRow['filledForms'];
 
-    echo "<h2>Form Status</h2>";
-    echo "<p>Total Students: $totalStudents</p>";
-    echo "<p>Students who have filled the form: $filledForms</p>";
-    echo "<p>Students who have not filled the form: $remainingForms</p>";
-    echo "<p>Students accepted for internship: $acceptedStudents</p>"; // Display count of accepted students
+$totalFilledForms = $filledForms + $acceptedStudents; // Adding count of accepted requests
+
+$remainingForms = $totalStudents - $totalFilledForms;
+
+echo "<h2>Form Status</h2>";
+echo "<p>Total Students: $totalStudents</p>";
+echo "<p>Students who have filled the form: $totalFilledForms</p>";
+echo "<p>Students who have not filled the form: $remainingForms</p>";
+echo "<p>Students accepted for internship: $acceptedStudents</p>"; // Display count of accepted students
 
     echo "<h2>Student Submissions</h2>";
     echo "<table>";

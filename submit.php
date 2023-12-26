@@ -31,9 +31,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO internship_form (studentId, fullName, branch, semester, learningMode, companyName, confirmedTechnology, companyCity, companyAddress, companyWebsite, hrName, hrEmail, hrContact) VALUES ('$studentId', '$fullName', '$branch', '$semester', '$learningMode', '$companyName', '$confirmedTechnology', '$companyCity', '$companyAddress', '$companyWebsite', '$hrName', '$hrEmail', '$hrContact')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully";
+        // Set a session message for successful submission
+        $_SESSION['message'] = "New record created successfully";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        // Handle errors if needed
+        $_SESSION['message'] = "Error creating record: " . $conn->error;
     }
 
     $conn->close();

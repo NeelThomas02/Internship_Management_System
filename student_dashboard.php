@@ -104,6 +104,36 @@ button[type="submit"]:hover {
     background-color: #45a049;
 }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('form').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form data
+            var formData = $(this).serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: 'submit.php',
+                data: formData,
+                success: function(response) {
+                    // Display toast notification on success
+                    showToast("New record created successfully");
+                },
+                error: function() {
+                    // Handle errors if needed
+                }
+            });
+        });
+
+        function showToast(message) {
+            // Replace this with your preferred method of displaying a toast notification
+            alert(message); // For demonstration, using alert as a placeholder
+        }
+    });
+</script>
+
 </head>
 <body>
     <div class="navbar">
