@@ -61,6 +61,20 @@ a:hover{
     padding: 5px; /* Add padding on hover */
 }
 
+@media screen and (max-width: 770px) {
+    .navbar ul {
+        flex-direction: column;
+        height: auto;
+        padding: 0;
+    }
+
+    .navbar ul li {
+        padding: 10px 0;
+        width: 100%;
+        text-align: center;
+    }
+}
+
 </style>
 <body>
     <div class="navbar">

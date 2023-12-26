@@ -103,6 +103,19 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #45a049;
 }
+@media screen and (max-width: 770px) {
+    .navbar ul {
+        flex-direction: column;
+        height: auto;
+        padding: 0;
+    }
+
+    .navbar ul li {
+        padding: 10px 0;
+        width: 100%;
+        text-align: center;
+    }
+}
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>

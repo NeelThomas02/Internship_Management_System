@@ -17,6 +17,7 @@
             margin-top: -2.5vh;
             padding: 0;
             width: 100%;
+            height: max-content;
         }
 
         ul {
@@ -90,7 +91,22 @@
     .undo-btn:hover {
         background-color: #ec971f; /* Darker orange color on hover */
     }
-    </style>
+
+    @media screen and (max-width: 770px) {
+    .navbar ul {
+        flex-direction: column;
+        height: auto;
+        padding: 0;
+    }
+
+    .navbar ul li {
+        padding: 10px 0;
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>
+
 </head>
 <body>
 <div class="navbar">
