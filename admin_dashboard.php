@@ -92,6 +92,27 @@
         background-color: #ec971f; /* Darker orange color on hover */
     }
 
+    #not-filled-list {
+    list-style-type: none;
+    padding: 0;
+    }
+
+    .not-filled-item {
+    background-color: #f00;
+    color: #fff;
+    padding: 5px;
+    margin-bottom: 2px;
+    }
+
+    .company-link {
+    color: blue !important;
+    text-decoration: underline;
+    }
+    .company-link:hover {
+    color: darkblue;
+    text-decoration: underline;
+    }
+
     @media screen and (max-width: 770px) {
     .navbar ul {
         flex-direction: column;
@@ -111,7 +132,7 @@
 <body>
 <div class="navbar">
     <ul>
-        <li class="listitems"><a href="admin_dashboard.html">Home</a></li>
+        <li class="listitems"><a href="admin_dashboard.php">Home</a></li>
         <li class="listitems"><a href="admin_company_list.php">Company List</a></li>
         <!-- <li class="listitems"><a href="admin_letter.php">Student Documents</a></li> -->
         <li class="listitems"><a href="admin_offer_letter.php">Student Offer Letter</a></li>
@@ -123,7 +144,7 @@
 <div class="container">
     <h1>Student Submissions</h1>
     <div class="submission-list">
-    <?php
+<?php
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -149,47 +170,91 @@ $acceptedStudents = $acceptedStudentsRow['acceptedStudents'];
 $sql = "SELECT * FROM internship_form";
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    $filledFormsQuery = "SELECT COUNT(*) as filledForms FROM internship_form";
+$acceptedCountQuery = "SELECT COUNT(*) as acceptedCount FROM accepted_requests";
+$rejectedCountQuery = "SELECT COUNT(*) as rejectedCount FROM rejected_requests";
+
+$acceptedCountResult = $conn->query($acceptedCountQuery);
+$rejectedCountResult = $conn->query($rejectedCountQuery);
+
+$acceptedCountRow = $acceptedCountResult->fetch_assoc();
+$rejectedCountRow = $rejectedCountResult->fetch_assoc();
+
+$acceptedCount = $acceptedCountRow['acceptedCount'];
+$rejectedCount = $rejectedCountRow['rejectedCount'];
+
+$totalStudentsQuery = "SELECT COUNT(*) as totalStudents FROM users WHERE user_role = 'student'";
+$totalStudentsResult = $conn->query($totalStudentsQuery);
+$totalStudentsRow = $totalStudentsResult->fetch_assoc();
+$totalStudents = $totalStudentsRow['totalStudents'];
+
+$filledFormsQuery = "SELECT COUNT(*) as filledForms FROM internship_form";
 $filledFormsResult = $conn->query($filledFormsQuery);
 $filledFormsRow = $filledFormsResult->fetch_assoc();
 $filledForms = $filledFormsRow['filledForms'];
 
-$totalFilledForms = $filledForms + $acceptedStudents; // Adding count of accepted requests
+$totalFilledForms = $filledForms + $acceptedCount; // Update total filled forms with accepted count
 
 $remainingForms = $totalStudents - $totalFilledForms;
+$notFilledQuery = "SELECT username FROM users WHERE user_role = 'student' AND username NOT IN (SELECT username FROM internship_form) AND username NOT IN (SELECT username from accepted_requests)";
+$notFilledResult = $conn->query($notFilledQuery);
 
-echo "<h2>Form Status</h2>";
-echo "<p>Total Students: $totalStudents</p>";
-echo "<p>Students who have filled the form: $totalFilledForms</p>";
-echo "<p>Students who have not filled the form: $remainingForms</p>";
-echo "<p>Students accepted for internship: $acceptedStudents</p>"; // Display count of accepted students
 
-    echo "<h2>Student Submissions</h2>";
-    echo "<table>";
-    echo "<tr><th>Student ID</th><th>Full Name</th><th>Branch</th><th>Company</th></tr>";
-    while ($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>" . $row["studentId"] . "</td>";
-        echo "<td>" . $row["fullName"] . "</td>";
-        echo "<td>" . $row["branch"] . "</td>";
-        // Display other fields similarly
-        echo "<td>" . $row["companyName"] . "</td>";
-        echo "<td>";
-        // Add accept and reject buttons with links to trigger PHP actions
-        echo "<a class='accept-btn' href='accepted_requests.php?id=" . $row['id'] . "&status=Accepted'>Accept</a> | ";
-        echo "<a class='reject-btn' href='rejected_requests.php?id=" . $row['id'] . "&status=Rejected'>Reject</a>";
-        echo "</td>";
-        echo "</tr>";
-    }
-    echo "</table>";
-} else {
-    echo "<p>No submissions yet.</p>";
-}
 
 ?>
 
-    </div>
+    <h2>Form Status</h2>
+    <p>Total Students: <?php echo $totalStudents; ?></p>
+    <p>Students who have filled the form: <?php echo $totalFilledForms; ?></p>
+    <p>Students who have not filled the form: <?php echo $remainingForms; ?></p>
+    <p>Students accepted for internship: <?php echo $acceptedCount; ?></p>
+    <p>Students rejected for internship: <?php echo $rejectedCount; ?></p>
+
+    <h2>Students Who Have Not Filled the Form</h2>
+    <?php
+    if ($notFilledResult->num_rows > 0) {
+        echo "<ul id='not-filled-list'>";
+        while ($notFilledRow = $notFilledResult->fetch_assoc())     {
+            echo "<li class='not-filled-item'>" . $notFilledRow["username"] . "</li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "<p>All students have filled the form.</p>";
+    }
+    ?>
+    <p><a href="download_not_filled.php" style="text-decoration: none; color: #000; background-color: #ccc; padding: 5px; border-radius: 5px;">Download the list</a></p>
+
+
+    <h1>Student Submissions</h1>
+        <div class="submission-list">
+            <?php
+            if ($result->num_rows > 0) {
+                // Display student submissions
+                echo "<table>";
+                echo "<tr><th>Student ID</th><th>Full Name</th><th>Company</th><th>HR Name</th><th>HR Email</th><th>HR Contact</th><th>Company Website</th><th>Type of Internship</th></tr>";
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row["username"] . "</td>";
+                    echo "<td>" . $row["fullName"] . "</td>";
+                    echo "<td>" . $row["companyName"] . "</td>";
+                    echo "<td>" . $row["hrName"] . "</td>";
+                    echo "<td>" . $row["hrEmail"] . "</td>";
+                    echo "<td>" . $row["hrContact"] . "</td>";
+                    echo "<td> <a class='company-link' href='". $row["companyWebsite"] ."' target='_blank'>" .$row["companyWebsite"] . "</a></td>";
+                    echo "<td>" . $row["typeofinternship"] . "</td>";
+                    echo "<td>";
+                    // Add accept and reject buttons with links to trigger PHP actions
+                    echo "<a class='accept-btn' href='accepted_requests.php?id=" . $row['id'] . "&status=Accepted'>Accept</a> | ";
+                    echo "<a class='reject-btn' href='rejected_requests.php?id=" . $row['id'] . "&status=Rejected'>Reject</a>";
+                    echo "</td>";
+                    echo "</tr>";
+                }
+                echo "</table>";
+            } else {
+                echo "<p>No submissions yet.</p>";
+            }
+            ?>
+
+</div>
 </div>
 <div class="accepted-requests">
     <h2>Accepted Requests</h2>
@@ -209,7 +274,7 @@ echo "<p>Students accepted for internship: $acceptedStudents</p>"; // Display co
         if ($acceptedResult->num_rows > 0) {
             while ($row = $acceptedResult->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $row["studentId"] . "</td>";
+                echo "<td>" . $row["username"] . "</td>";
                 echo "<td>" . $row["fullName"] . "</td>";
                 echo "<td>" . $row["branch"] . "</td>";
                 echo "<td>" . $row["companyName"] . "</td>";
@@ -244,7 +309,7 @@ echo "<p>Students accepted for internship: $acceptedStudents</p>"; // Display co
         if ($rejectedResult->num_rows > 0) {
             while ($row = $rejectedResult->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $row["studentId"] . "</td>";
+                echo "<td>" . $row["username"] . "</td>";
                 echo "<td>" . $row["fullName"] . "</td>";
                 echo "<td>" . $row["branch"] . "</td>";
                 echo "<td>" . $row["companyName"] . "</td>";

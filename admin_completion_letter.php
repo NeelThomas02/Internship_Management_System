@@ -41,6 +41,40 @@
             color: black !important;
         }
 
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #1a5ca1;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        a.open-tab-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #1a5ca1;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        a.open-tab-btn:hover {
+            background-color: #0e3a6e;
+        }
+
         @media screen and (max-width: 770px) {
     .navbar ul {
         flex-direction: column;
@@ -69,18 +103,40 @@
     </ul>
 </div>
 <h1>Uploaded Completion Letters</h1>
-    <div class="file-list">
+<div class="file-list">
+    <table>
+        <thead>
+            <tr>
+                <th>RollId</th>
+                <th>Document Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
         <?php
-        // PHP code to fetch and display completion letters
-        $directory = "letters/completion_letters/"; // Directory where completion letters are stored
-        $files = scandir($directory);
+        $directory = "letters/completion_letters/";
+        $fileDetailsPath = $directory . "completion_letters_details.txt";
 
-        foreach ($files as $file) {
-            if ($file !== '.' && $file !== '..') {
-                echo '<a href="' . $directory . $file . '" download>' . $file . '</a><br>';
+        if (file_exists($fileDetailsPath)) {
+            $fileDetails = file($fileDetailsPath, FILE_IGNORE_NEW_LINES);
+            if (!empty($fileDetails)) {
+                foreach ($fileDetails as $details) {
+                    $splitDetails = explode(" | ", $details);
+                    $username = str_replace("Username: ", "", $splitDetails[0]);
+                    $fileName = str_replace("File: ", "", $splitDetails[1]);
+
+                    echo '<tr>';
+                    echo '<td>' . $username . '</td>';
+                    echo '<td>' . $fileName . '</td>';
+                    echo '<td><a href="' . $directory . $fileName . '" class="open-tab-btn" target="_blank">View</a></td>';
+                    echo '</tr>';
+                }
+            } else {
+                echo '<tr><td colspan="3">The "completion_letters_details.txt" file exists, but it is empty.</td></tr>';
             }
+        } else {
+            echo '<tr><td colspan="3">No completion letters received yet.</td></tr>';
         }
         ?>
-    </div>
 </body>
 </html>

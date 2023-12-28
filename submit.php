@@ -13,11 +13,12 @@ if ($conn->connect_error) {
 
 // Use PHP code to retrieve the form data and store it in variables
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $studentId = mysqli_real_escape_string($conn, $_POST["studentId"]);
+    $username = mysqli_real_escape_string($conn, $_POST["username"]);
     $fullName = mysqli_real_escape_string($conn, $_POST["fullName"]);
     $branch = mysqli_real_escape_string($conn, $_POST["branch"]);
     $semester = mysqli_real_escape_string($conn, $_POST["semester"]);
     $learningMode = mysqli_real_escape_string($conn, $_POST["learningMode"]);
+    $typeofinternship = mysqli_real_escape_string($conn, $_POST["typeofinternship"]);
     $companyName = mysqli_real_escape_string($conn, $_POST["companyName"]);
     $confirmedTechnology = mysqli_real_escape_string($conn, $_POST["confirmedTechnology"]);
     $companyCity = mysqli_real_escape_string($conn, $_POST["companyCity"]);
@@ -28,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hrContact = mysqli_real_escape_string($conn, $_POST["hrContact"]);
 
     // Insert the form data into the table
-    $sql = "INSERT INTO internship_form (studentId, fullName, branch, semester, learningMode, companyName, confirmedTechnology, companyCity, companyAddress, companyWebsite, hrName, hrEmail, hrContact) VALUES ('$studentId', '$fullName', '$branch', '$semester', '$learningMode', '$companyName', '$confirmedTechnology', '$companyCity', '$companyAddress', '$companyWebsite', '$hrName', '$hrEmail', '$hrContact')";
+    $sql = "INSERT INTO internship_form (username, fullName, branch, semester, learningMode, typeofinternship, companyName, confirmedTechnology, companyCity, companyAddress, companyWebsite, hrName, hrEmail, hrContact) VALUES ('$username', '$fullName', '$branch', '$semester', '$learningMode', '$typeofinternship', '$companyName', '$confirmedTechnology', '$companyCity', '$companyAddress', '$companyWebsite', '$hrName', '$hrEmail', '$hrContact')";
 
     if ($conn->query($sql) === TRUE) {
         // Set a session message for successful submission

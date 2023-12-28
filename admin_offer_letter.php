@@ -93,7 +93,7 @@
 <body>
 <div class="navbar">
     <ul>
-        <li class="listitems"><a href="admin_dashboard.html">Home</a></li>
+        <li class="listitems"><a href="admin_dashboard.php">Home</a></li>
         <li class="listitems"><a href="admin_company_list.php">Company List</a></li>
         <!-- <li class="listitems"><a href="admin_letter.php">Student Documents</a></li> -->
         <li class="listitems"><a href="admin_offer_letter.php">Student Offer Letter</a></li>
@@ -107,24 +107,37 @@
     <table>
         <thead>
             <tr>
+                <th>RollId</th>
                 <th>Document Name</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <?php
-            $directory = "letters/offer_letters/";
-            $files = scandir($directory);
+        <?php
+$directory = "letters/offer_letters/";
+$fileDetailsPath = $directory . "offer_letters_details.txt";
 
-            foreach ($files as $file) {
-                if ($file !== '.' && $file !== '..') {
-                    echo '<tr>';
-                    echo '<td>' . $file . '</td>';
-                    echo '<td><a href="' . $directory . $file . '" class="open-tab-btn" target="_blank">View</a></td>';
-                    echo '</tr>';
-                }
-            }
-            ?>
+if (file_exists($fileDetailsPath)) {
+    $fileDetails = file($fileDetailsPath, FILE_IGNORE_NEW_LINES);
+    if (!empty($fileDetails)) {
+        foreach ($fileDetails as $details) {
+            $splitDetails = explode(" | ", $details);
+            $username = str_replace("Username: ", "", $splitDetails[0]);
+            $fileName = str_replace("File: ", "", $splitDetails[1]);
+
+            echo '<tr>';
+            echo '<td>' . $username . '</td>';
+            echo '<td>' . $fileName . '</td>';
+            echo '<td><a href="' . $directory . $fileName . '" class="open-tab-btn" target="_blank">View</a></td>';
+            echo '</tr>';
+        }
+    } else {
+        echo '<tr><td colspan="2">The "offer_letters_details.txt" file exists, but it is empty.</td></tr>';
+    }
+} else {
+    echo '<tr><td colspan="2">No offer letters received yet.</td></tr>';
+}
+?>
         </tbody>
     </table>
 </body>

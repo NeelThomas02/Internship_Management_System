@@ -172,16 +172,25 @@ if (isset($_SESSION['message'])) {
         <h1 class="text-center mb-4">Online Training Form</h1>
     <form action="submit.php" method="post" enctype="multipart/form-data">
         <div class="input-container">
-            <label for="studentId">Student Id</label>
-            <input type="text" id="studentId" name="studentId" required>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
         </div>
         <div class="input-container">
             <label for="fullName">Full Name</label>
             <input type="text" id="fullName" name="fullName" required>
         </div>
-        <div class="input-container">
+        <!-- <div class="input-container">
             <label for="branch">Branch</label>
             <input type="text" id="branch" name="branch" required>
+        </div> -->
+        <div class="input-container">
+            <label for="branch">Department</label>
+            <select id="branch" name="branch" required>
+                <option value="">Select Department</option>
+                <option value="CSE">CSE</option>
+                <option value="CE">CE</option>
+                <option value="IT">IT</option>
+            </select>
         </div>
         <div class="input-container">
             <label for="semester">Semester</label>
@@ -198,6 +207,16 @@ if (isset($_SESSION['message'])) {
                 <option value="Online">Online</option>
                 <option value="Hybrid">Hybrid</option>
                 <option value="On-Site">On-Site</option>
+            </select>
+        </div>
+        <div class="input-container">
+            <label for="typeofinternship">Type of Internship</label>
+            <select id="typeofinternship" name="typeofinternship" required>
+                <option value="">Select type of internship</option>
+                <option value="technologytraining">Technology Training</option>
+                <option value="developmentproject">Development Project</option>
+                <option value="inhouseinternship">Inhouse Internship</option>
+                <option value="researchinternship">Research Internship</option>
             </select>
         </div>
         <div class="input-container">
