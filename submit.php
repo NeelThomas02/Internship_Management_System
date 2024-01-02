@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // Establish a connection to the MySQL database in XAMPP
 $servername = "localhost";
 $username = "root";
@@ -11,7 +13,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Use PHP code to retrieve the form data and store it in variables
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = mysqli_real_escape_string($conn, $_POST["username"]);
     $fullName = mysqli_real_escape_string($conn, $_POST["fullName"]);
@@ -28,17 +29,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hrEmail = mysqli_real_escape_string($conn, $_POST["hrEmail"]);
     $hrContact = mysqli_real_escape_string($conn, $_POST["hrContact"]);
 
-    // Insert the form data into the table
+    // Check if the company name exists in the company_list_trial table
+    $checkQuery = "SELECT * FROM company_list_trial WHERE `Company Name` = '$companyName'";
+    $checkResult = $conn->query($checkQuery);
+
+    if ($checkResult->num_rows == 0) {
+        // If the company name doesn't exist, insert it into the company_list_trial table
+        $insertQuery = "INSERT INTO company_list_trial (`Company Name`, `Location`, `HR Name`, `HR Phone`, `HR Email`) VALUES ('$companyName', '$companyCity', '$hrName', '$hrContact', '$hrEmail')";
+        if ($conn->query($insertQuery) === TRUE) {
+            $_SESSION['message'] = "New company added to company_list_trial!";
+        } else {
+            $_SESSION['message'] = "Error adding new company: " . $conn->error;
+        }
+    }
+
+    // Insert the form data into the internship_form table
     $sql = "INSERT INTO internship_form (username, fullName, branch, semester, learningMode, typeofinternship, companyName, confirmedTechnology, companyCity, companyAddress, companyWebsite, hrName, hrEmail, hrContact) VALUES ('$username', '$fullName', '$branch', '$semester', '$learningMode', '$typeofinternship', '$companyName', '$confirmedTechnology', '$companyCity', '$companyAddress', '$companyWebsite', '$hrName', '$hrEmail', '$hrContact')";
 
     if ($conn->query($sql) === TRUE) {
-        // Set a session message for successful submission
         $_SESSION['message'] = "New record created successfully";
     } else {
-        // Handle errors if needed
         $_SESSION['message'] = "Error creating record: " . $conn->error;
     }
 
     $conn->close();
+
+    // Redirect back to the form page
+    // header("Location: internship_application_form.php");
+    exit();
 }
 ?>

@@ -93,7 +93,7 @@
 <body>
 <div class="navbar">
     <ul>
-        <li class="listitems"><a href="admin_dashboard.html">Home</a></li>
+        <li class="listitems"><a href="admin_dashboard.php">Home</a></li>
         <li class="listitems"><a href="admin_company_list.php">Company List</a></li>
         <!-- <li class="listitems"><a href="admin_letter.php">Student Documents</a></li> -->
         <li class="listitems"><a href="admin_offer_letter.php">Student Offer Letter</a></li>
@@ -102,12 +102,20 @@
         <li class="listitems"><a href="logout.php">Logout</a></li>
     </ul>
 </div>
-<h1>Uploaded Completion Letters</h1>
+<h1>Uploaded Offer Letters</h1>
+    <div class="search-sort">
+        <form action="" method="GET">
+            <label for="search">Search Roll ID:</label>
+            <input type="text" id="search" name="search">
+            <button type="submit">Search</button>
+        </form>
+    </div>
 <div class="file-list">
     <table>
         <thead>
             <tr>
-                <th>RollId</th>
+                <th>Roll Id <a href="?sort=asc">&#9650;</a>
+        <a href="?sort=desc">&#9660;</a></th>
                 <th>Document Name</th>
                 <th>Action</th>
             </tr>
@@ -117,19 +125,43 @@
         $directory = "letters/completion_letters/";
         $fileDetailsPath = $directory . "completion_letters_details.txt";
 
+        function getRollId($details)
+{
+    return str_replace("Username: ", "", explode(" | ", $details)[0]);
+}
+
         if (file_exists($fileDetailsPath)) {
             $fileDetails = file($fileDetailsPath, FILE_IGNORE_NEW_LINES);
             if (!empty($fileDetails)) {
+        
+                // Sorting functionality for RollId column
+                if (isset($_GET['sort']) && $_GET['sort'] == 'asc') {
+                    usort($fileDetails, function ($a, $b) {
+                        $usernameA = getRollId($a);
+                        $usernameB = getRollId($b);
+                        return strcmp($usernameA, $usernameB);
+                    });
+                }
+        
+                // Searching functionality for RollId column
+                if (isset($_GET['search'])) {
+                    $searchTerm = $_GET['search'];
+                    $fileDetails = array_filter($fileDetails, function ($details) use ($searchTerm) {
+                        $rollId = getRollId($details);
+                        return stripos($rollId, $searchTerm) !== false && stripos($rollId, $searchTerm) === 0;
+                    });
+                }
+        
                 foreach ($fileDetails as $details) {
                     $splitDetails = explode(" | ", $details);
                     $username = str_replace("Username: ", "", $splitDetails[0]);
                     $fileName = str_replace("File: ", "", $splitDetails[1]);
-
-                    echo '<tr>';
-                    echo '<td>' . $username . '</td>';
-                    echo '<td>' . $fileName . '</td>';
-                    echo '<td><a href="' . $directory . $fileName . '" class="open-tab-btn" target="_blank">View</a></td>';
-                    echo '</tr>';
+        
+                    echo '<tr>' . PHP_EOL;
+                    echo '<td>' . $username . '</td>' . PHP_EOL;
+                    echo '<td>' . $fileName . '</td>' . PHP_EOL;
+                    echo '<td><a href="' . $directory . $fileName . '" class="open-tab-btn" target="_blank">View</a></td>' . PHP_EOL;
+                    echo '</tr>' . PHP_EOL;
                 }
             } else {
                 echo '<tr><td colspan="3">The "completion_letters_details.txt" file exists, but it is empty.</td></tr>';

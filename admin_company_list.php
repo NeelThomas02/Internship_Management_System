@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <style>
+
     body {
         font-family: Arial, sans-serif;
         overflow-x: hidden;
@@ -16,7 +17,7 @@
 
     .navbar{
         z-index: 100;
-        position: fixed;
+        position: sticky;
         margin-top: -2.5vh ;
         padding: 0;
         width: 100%;
@@ -45,147 +46,218 @@
         color: black !important;
     }
 
-    /* .container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 60%;
-        max-width: 400px;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-    } */
-
     h1 {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
-}
+    }
 
-.form-group {
-    margin-bottom: 15px;
-}
+    .table-container {
+        overflow-x: auto;
+        max-width: 100%;
+        margin-bottom: 20px;
+        margin-top: 10vh;
+    }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-}
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        background-color: #fff; /* Table background color */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Table shadow */
+    }
 
-    h2 {
-        text-align: center;
-        margin-top: 0;
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #1a5ca1; /* Header background color */
+        color: #fff; /* Header text color */
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2; /* Alternate row background color */
+    }
+
+    td a {
+        color: #4CAF50;
+        text-decoration: none;
+    }
+
+    td a:hover {
+        text-decoration: underline;
     }
 
     form {
-        display: flex;
-        flex-direction: column;
-    }
-
-    input[type="submit"] {
-        margin-top: 15px;
-    }
-
-input[type="file"] {
-    width: 70%;
+    margin: 20px;
     padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-}
+    width: 180vh;
+    height: max-content;
+    background-color: #f5f7fa;
+    border: 1px solid #c3cfe2;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-input[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
+    form h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-input[type="submit"]:hover {
-    background-color: #45a049;
-}
+    form .form-group {
+        margin-bottom: 15px;
+    }
+
+    form label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    form input {
+        width: 90%;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .delete-button {
+            background-color: #f44336;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+    }
+
+    @media screen and (max-width: 770px) {
+        .navbar ul {
+            flex-direction: row;
+            height: auto;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            padding: 10px 0;
+            width: 100%;
+            text-align: center;
+        }
 
         .table-container {
-            overflow-x: auto; /* Enable horizontal scroll */
-            overflow-y: hidden;
-            max-width: 100%; /* Adjust the maximum width as needed */
-            margin-bottom: 20px; /* Space between the table and other content */
-            margin-top: 20px; /* Space between the table and the navbar */
+            overflow-x: scroll;
+            padding: 0;
+            margin-left: -20px;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed; /* Ensure uniform column width */
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #ddd;
-            white-space: nowrap; /* Prevent text wrapping */
-            overflow: hidden;
-            text-overflow: ellipsis; /* Show ellipsis for long text */
-        }
-
-        @media screen and (max-width: 770px) {
-    .navbar ul {
-        flex-direction: column;
-        height: auto;
-        padding: 0;
     }
-
-    .navbar ul li {
-        padding: 10px 0;
-        width: 100%;
-        text-align: center;
-    }
-}
     </style>
 <body>
     <div class="navbar">
         <ul>
             <li class="listitems"><a href="admin_dashboard.php">Home</a></li>
             <li class="listitems"><a href="admin_company_list.php">Company List</a></li>
-        <li class="listitems"><a href="admin_offer_letter.php">Student Offer Letter</a></li>
-        <li class="listitems"><a href="admin_completion_letter.php">Student Completion Letter</a></li>
+            <li class="listitems"><a href="admin_offer_letter.php">Student Offer Letter</a></li>
+            <li class="listitems"><a href="admin_completion_letter.php">Student Completion Letter</a></li>
             <!-- <li class="listitems"><a href="upload.html">Upload</a></li> -->
             <li class="listitems"><a href="logout.php">Logout</a></li>
         </ul>
     </div>
-    <!-- <div class="container"> -->
-        <h2>Upload and Display Company List</h2>
-        <form action="admin_company_list.php" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="company_list">Company List:</label>
-                <input type="file" name="company_list" id="company_list" accept=".xlsx, .xls" required>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Upload">
-            </div>
-        </form>
 
-        <h2>Uploaded Company List</h2>
-        <div class="table-container">
-        <?php
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            require 'upload.php';
-            if (function_exists('displayExcelData')) {
-                $targetDir = "uploads/";
-                $targetFile = $targetDir . basename($_FILES["company_list"]["name"]);
-                displayExcelData($targetFile); // Call the function to display Excel data
-            } else {
-                echo "Function displayExcelData not found.";
-            }
-        }
-        ?>
-        </div>
-    <!-- </div> -->
+    <form method="POST" action="add_company.php" style=" background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: grid; grid-auto-flow:row;">
+    <h2>Add New Company</h2>
+    <div>
+    <div class="form-group" style="display: inline-block; margin-right: 10px; margin-left: 60px">
+        <label for="company_name">Company Name:</label>
+        <input type="text" id="company_name" name="company_name" required>
+    </div>
+    <div class="form-group" style="display: inline-block; margin-right: 10px;">
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+    </div>
+    <div class="form-group" style="display: inline-block; margin-right: 10px;">
+        <label for="hr_name">HR Name:</label>
+        <input type="text" id="hr_name" name="hr_name" required>
+    </div>
+    <div class="form-group" style="display: inline-block; margin-right: 10px;">
+        <label for="hr_phone">HR Phone:</label>
+        <input type="text" id="hr_phone" name="hr_phone" required>
+    </div>
+    <div class="form-group" style="display: inline-block; margin-right: 10px;">
+        <label for="hr_email">HR Email:</label>
+        <input type="email" id="hr_email" name="hr_email" required>
+    </div>
+    <input type="submit" value="Add Company" style="width: 50%; margin: 0vh 40vh;">
+    </div>
+</form>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Company Name <a href="?sort=asc&amp;column=Company%20Name">&#9650;</a>
+            <a href="?sort=desc&amp;column=Company%20Name">&#9660;</a></th>
+                    <th>Location</th>
+                    <th>HR Name</th>
+                    <th>HR Phone</th>
+                    <th>HR Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Assuming you have established a database connection
+                $servername = "localhost";
+                $username = "root";
+                $password = "";
+                $dbname = "user_management";
+
+                // Create connection
+                $conn = new mysqli($servername, $username, $password, $dbname);
+
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+                $column = isset($_GET['column']) ? $_GET['column'] : '';
+
+                // Fetch data from company_list table
+                $sql = "SELECT * FROM company_list_trial";
+                if (!empty($sort) && !empty($column)) {
+                    $sql .= " ORDER BY " . $column . " ";
+                    $sql .= ($sort == 'asc') ? "ASC" : "DESC";
+                }
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    // Output data of each row
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["Company Name"] . "</td>";
+                        echo "<td>" . $row["Location"] . "</td>";
+                        echo "<td>" . $row["HR Name"] . "</td>";
+                        echo "<td>" . $row["HR Phone"] . "</td>";
+                        echo "<td>" . $row["HR Email"] . "</td>";
+                        // Add other columns as needed
+
+                        // Example of adding a delete button (modify with proper functionality)
+                        echo "<td><a href='delete_company.php?id=" . $row["Company Name"] . "' class='delete-button'>Delete</a></td>";
+
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='4'>No data found</td></tr>";
+                }
+                $conn->close();
+                ?>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
