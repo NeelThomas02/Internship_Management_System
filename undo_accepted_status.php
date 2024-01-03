@@ -31,6 +31,21 @@ if (isset($_GET['id'])) {
             $deleteResult = $conn->query($deleteQuery);
 
             if ($deleteResult === TRUE) {
+                // Check if the company exists in 'company_list_trial'
+                $companyName = $row['companyName'];
+                $companyCity = $row['companyCity'];
+                $hrName = $row['hrName'];
+                $hrEmail = $row['hrEmail'];
+                $hrContact = $row['hrContact'];
+                $checkCompanySql = "SELECT * FROM company_list_trial WHERE `Company Name` = '$companyName'";
+                $companyResult = $conn->query($checkCompanySql);
+
+                if ($companyResult->num_rows > 0) {
+                    // Company exists, delete from 'company_list_trial'
+                    $deleteCompanySql = "DELETE FROM company_list_trial WHERE `Company Name` = '$companyName' AND `Location` = '$companyCity' AND `Hr Name` = '$hrName' AND `HR Email` = '$hrEmail' AND `HR Phone` = '$hrContact'";
+                    $conn->query($deleteCompanySql);
+                }
+
                 // Redirect back to the admin dashboard after successful undo
                 header("Location: admin_dashboard.php");
                 exit();

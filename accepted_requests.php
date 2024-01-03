@@ -31,6 +31,24 @@ if ($result->num_rows > 0) {
         $deleteSql = "DELETE FROM internship_form WHERE id = $id";
 
         if ($conn->query($deleteSql) === TRUE) {
+            // Check if the company exists in 'company_list_trial'
+            $companyName = $row['companyName'];
+            $companyCity = $row['companyCity'];
+            $hrName = $row['hrName'];
+            $hrEmail = $row['hrEmail'];
+            $hrContact = $row['hrContact'];
+            $checkCompanySql = "SELECT * FROM company_list_trial WHERE `Company Name` = '$companyName'";
+            $companyResult = $conn->query($checkCompanySql);
+
+            if ($companyResult->num_rows == 0) {
+                // Company not present, insert into 'company_list_trial'
+                $insertCompanySql = "INSERT INTO company_list_trial (`Company Name`, `Location`, `Hr Name`, `HR Email`, `HR Phone`)
+                     VALUES ('$companyName', '$companyCity', '$hrName', '$hrEmail', '$hrContact')";
+                if ($conn->query($insertCompanySql) !== TRUE) {
+                    echo "Error inserting company record: " . $conn->error;
+                }
+            }
+
             // Set session variable for success message
             session_start();
             $_SESSION['message'] = "Request accepted successfully.";
