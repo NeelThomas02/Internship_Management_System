@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 </head>
 <style>
 
     body {
         font-family: Arial, sans-serif;
-        overflow-x: hidden;
+        /* overflow-x: hidden; */
         background-color: #E8F7FE;
         margin: 0;
         padding: 0;
@@ -20,7 +21,7 @@
         position: sticky;
         margin-top: -2.5vh ;
         padding: 0;
-        width: 100%;
+        width: 99%;
     }
 
     ul{
@@ -57,6 +58,7 @@
         max-width: 100%;
         margin-bottom: 20px;
         margin-top: 10vh;
+        width: 100%;
     }
 
     table {
@@ -71,6 +73,7 @@
         padding: 12px;
         text-align: left;
         border: 1px solid #ddd;
+        width: 100%;
     }
 
     th {
@@ -87,11 +90,9 @@
         text-decoration: none;
     }
 
-    td a:hover {
-        text-decoration: underline;
-    }
-
     form {
+    display: grid;
+    grid-auto-flow:row;
     margin: 20px;
     padding: 10px;
     width: 180vh;
@@ -137,8 +138,12 @@
     }
 
     @media screen and (max-width: 770px) {
+        .navbar{
+            float: left;
+            width: 300%;
+        }
         .navbar ul {
-            flex-direction: row;
+            flex-direction: column;
             height: auto;
             padding: 0;
         }
@@ -146,13 +151,14 @@
         .navbar ul li {
             padding: 10px 0;
             width: 100%;
-            text-align: center;
+            text-align: start;
         }
 
         .table-container {
-            overflow-x: scroll;
-            padding: 0;
-            margin-left: -20px;
+                overflow-x: scroll;
+                padding: 0;
+                margin-left: -20px;
+                width: calc(100% + 20px); /* Adjust width to account for scrollbar */
         }
     }
     </style>
@@ -168,7 +174,7 @@
         </ul>
     </div>
 
-    <form method="POST" action="add_company.php" style=" background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: grid; grid-auto-flow:row;">
+    <form method="POST" action="add_company.php" style=" background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
     <h2>Add New Company</h2>
     <div>
     <div class="form-group" style="display: inline-block; margin-right: 10px; margin-left: 60px">
@@ -196,11 +202,10 @@
 </form>
 
     <div class="table-container">
-        <table>
+        <table id="companyList">
             <thead>
                 <tr>
-                    <th>Company Name <a href="?sort=asc&amp;column=Company%20Name">&#9650;</a>
-            <a href="?sort=desc&amp;column=Company%20Name">&#9660;</a></th>
+                    <th>Company Name</th>
                     <th>Location</th>
                     <th>HR Name</th>
                     <th>HR Phone</th>
@@ -259,5 +264,12 @@
             </tbody>
         </table>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function() {
+        $('#companyList').DataTable();
+    });
+    </script>
 </body>
 </html>

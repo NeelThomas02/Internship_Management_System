@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,6 +45,10 @@
         }
 
         table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .accepted-requests {
             width: 100%;
             border-collapse: collapse;
         }
@@ -98,8 +103,8 @@
     }
 
     .not-filled-item {
-    background-color: #f00;
-    color: #fff;
+    color: red;
+    font-weight: bold;
     padding: 5px;
     margin-bottom: 2px;
     }
@@ -113,7 +118,19 @@
     text-decoration: underline;
     }
 
-    @media screen and (max-width: 770px) {
+    @media screen and (max-width: 970px) {
+    table{
+        width: 300%
+    }
+    .accepted-requests table {
+        width: 300%;
+    }
+    .rejected-requests table {
+        width: 300%;
+    }
+    .navbar{
+        width: 300%;
+    }
     .navbar ul {
         flex-direction: column;
         height: auto;
@@ -225,40 +242,49 @@ $notFilledResult = $conn->query($notFilledQuery);
 
 
     <h1>Student Submissions</h1>
-        <div class="submission-list">
-            <?php
-            if ($result->num_rows > 0) {
-                // Display student submissions
-                echo "<table>";
-                echo "<tr><th>Student ID</th><th>Full Name</th><th>Company</th><th>HR Name</th><th>HR Email</th><th>HR Contact</th><th>Company Website</th><th>Type of Internship</th></tr>";
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row["username"] . "</td>";
-                    echo "<td>" . $row["fullName"] . "</td>";
-                    echo "<td>" . $row["companyName"] . "</td>";
-                    echo "<td>" . $row["hrName"] . "</td>";
-                    echo "<td>" . $row["hrEmail"] . "</td>";
-                    echo "<td>" . $row["hrContact"] . "</td>";
-                    echo "<td> <a class='company-link' href='". $row["companyWebsite"] ."' target='_blank'>" .$row["companyWebsite"] . "</a></td>";
-                    echo "<td>" . $row["typeofinternship"] . "</td>";
-                    echo "<td>";
-                    // Add accept and reject buttons with links to trigger PHP actions
-                    echo "<a class='accept-btn' href='accepted_requests.php?id=" . $row['id'] . "&status=Accepted'>Accept</a> | ";
-                    echo "<a class='reject-btn' href='rejected_requests.php?id=" . $row['id'] . "&status=Rejected'>Reject</a>";
-                    echo "</td>";
-                    echo "</tr>";
-                }
-                echo "</table>";
-            } else {
-                echo "<p>No submissions yet.</p>";
-            }
-            ?>
+    <table id="internshipTable">
+    <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>Full Name</th>
+            <th>Company</th>
+            <th>HR Name</th>
+            <th>HR Email</th>
+            <th>HR Contact</th>
+            <th>Company Website</th>
+            <th>Type of Internship</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $sql = "SELECT * FROM internship_form";
+        $result = mysqli_query($conn, $sql);
 
-</div>
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr>";
+            echo "<td>".$row['username']."</td>";
+            echo "<td>".$row['fullName']."</td>";
+            echo "<td>".$row['companyName']."</td>";
+            echo "<td>".$row['hrName']."</td>";
+            echo "<td>".$row['hrEmail']."</td>";
+            echo "<td>".$row['hrContact']."</td>";
+            echo "<td><a class='company-link' href='" . $row["companyWebsite"] . "' target='_blank'>" . $row["companyWebsite"] . "</a></td>";
+            echo "<td>" . $row["typeofinternship"] . "</td>";
+            echo "<td>";
+            echo "<a class='accept-btn' href='accepted_requests.php?id=" . $row['id'] . "&status=Accepted'>Accept</a> | ";
+            echo "<a class='reject-btn' href='rejected_requests.php?id=" . $row['id'] . "&status=Rejected'>Reject</a>";
+            echo "</td>";
+            echo "</tr>";
+        }
+        ?>
+    </tbody>
+</table>
 </div>
 <div class="accepted-requests">
     <h2>Accepted Requests</h2>
-    <table>
+    <table id="acceptedRequests">
+        <thead>
         <tr>
             <th>Student ID</th>
             <th>Full Name</th>
@@ -266,6 +292,8 @@ $notFilledResult = $conn->query($notFilledQuery);
             <th>Company</th>
             <th>Action</th>
         </tr>
+        </thead>
+        <tbody>
         <?php
         // Retrieve accepted requests from the database
         $acceptedQuery = "SELECT * FROM accepted_requests";
@@ -288,12 +316,14 @@ $notFilledResult = $conn->query($notFilledQuery);
             echo "<tr><td colspan='5'>No accepted requests yet.</td></tr>";
         }
         ?>
+        </tbody>
     </table>
 </div>
 
 <div class="rejected-requests">
     <h2>Rejected Requests</h2>
-    <table>
+    <table id="rejectedRequests">
+        <thead>
         <tr>
             <th>Student ID</th>
             <th>Full Name</th>
@@ -301,6 +331,8 @@ $notFilledResult = $conn->query($notFilledQuery);
             <th>Company</th>
             <th>Action</th>
         </tr>
+        </thead>
+        <tbody>
         <?php
         // Retrieve rejected requests from the database
         $rejectedQuery = "SELECT * FROM rejected_requests";
@@ -324,7 +356,17 @@ $notFilledResult = $conn->query($notFilledQuery);
         }
         $conn->close();
         ?>
+        </tbody>
     </table>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function() {
+    $('#internshipTable').DataTable();
+    $('#acceptedRequests').DataTable();
+    $('#rejectedRequests').DataTable();
+});
+</script>
 </body>
 </html>

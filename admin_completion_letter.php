@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Completion Letter</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
     <style>
                 body {
             font-family: Arial, sans-serif;
@@ -103,19 +104,18 @@
     </ul>
 </div>
 <h1>Uploaded Offer Letters</h1>
-    <div class="search-sort">
+    <!-- <div class="search-sort">
         <form action="" method="GET">
             <label for="search">Search Roll ID:</label>
             <input type="text" id="search" name="search">
             <button type="submit">Search</button>
         </form>
-    </div>
+    </div> -->
 <div class="file-list">
-    <table>
+    <table id="completionList">
         <thead>
             <tr>
-                <th>Roll Id <a href="?sort=asc">&#9650;</a>
-        <a href="?sort=desc">&#9660;</a></th>
+                <th>Roll Id</th>
                 <th>Document Name</th>
                 <th>Action</th>
             </tr>
@@ -135,22 +135,22 @@
             if (!empty($fileDetails)) {
         
                 // Sorting functionality for RollId column
-                if (isset($_GET['sort']) && $_GET['sort'] == 'asc') {
-                    usort($fileDetails, function ($a, $b) {
-                        $usernameA = getRollId($a);
-                        $usernameB = getRollId($b);
-                        return strcmp($usernameA, $usernameB);
-                    });
-                }
+                // if (isset($_GET['sort']) && $_GET['sort'] == 'asc') {
+                //     usort($fileDetails, function ($a, $b) {
+                //         $usernameA = getRollId($a);
+                //         $usernameB = getRollId($b);
+                //         return strcmp($usernameA, $usernameB);
+                //     });
+                // }
         
                 // Searching functionality for RollId column
-                if (isset($_GET['search'])) {
-                    $searchTerm = $_GET['search'];
-                    $fileDetails = array_filter($fileDetails, function ($details) use ($searchTerm) {
-                        $rollId = getRollId($details);
-                        return stripos($rollId, $searchTerm) !== false && stripos($rollId, $searchTerm) === 0;
-                    });
-                }
+                // if (isset($_GET['search'])) {
+                //     $searchTerm = $_GET['search'];
+                //     $fileDetails = array_filter($fileDetails, function ($details) use ($searchTerm) {
+                //         $rollId = getRollId($details);
+                //         return stripos($rollId, $searchTerm) !== false && stripos($rollId, $searchTerm) === 0;
+                //     });
+                // }
         
                 foreach ($fileDetails as $details) {
                     $splitDetails = explode(" | ", $details);
@@ -170,5 +170,14 @@
             echo '<tr><td colspan="3">No completion letters received yet.</td></tr>';
         }
         ?>
+        </tbody>
+        </table>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#completionList').DataTable();
+    });
+</script>
 </body>
 </html>

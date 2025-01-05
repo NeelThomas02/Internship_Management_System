@@ -9,6 +9,7 @@ $loggedInUser = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest'; 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -124,7 +125,7 @@ $loggedInUser = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest'; 
     </div>
     <div class="container">
         <h2>Company List</h2>
-        <form method="GET" action="">
+        <!-- <form method="GET" action="">
         <input type="text" name="search" placeholder="Search...">
         <select name="column">
             <option value="Company Name">Company Name</option>
@@ -134,9 +135,9 @@ $loggedInUser = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest'; 
             <option value="HR Email">HR Email</option>
         </select>
         <input type="submit" value="Search">
-    </form>
+    </form> -->
         <div class="table-container">
-        <table>
+        <table id="companyList">
             <thead>
                 <tr>
                     <th>Company Name</th>
@@ -162,17 +163,17 @@ $loggedInUser = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest'; 
                     die("Connection failed: " . $conn->connect_error);
                 }
 
-                $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
-                $searchColumn = isset($_GET['column']) ? $_GET['column'] : '';
+                // $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
+                // $searchColumn = isset($_GET['column']) ? $_GET['column'] : '';
 
-                echo "<table border='1'>";
+                // echo "<table border='1'>";
 
                 $sql = "SELECT * FROM company_list_trial";
 
                 // Add conditions if search query and column are provided
-                if (!empty($searchQuery) && !empty($searchColumn)) {
-                    $sql .= " WHERE `$searchColumn` LIKE '%$searchQuery%'";
-                }
+                // if (!empty($searchQuery) && !empty($searchColumn)) {
+                //     $sql .= " WHERE `$searchColumn` LIKE '%$searchQuery%'";
+                // }
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
@@ -194,5 +195,12 @@ $loggedInUser = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest'; 
             </tbody>
         </table>
     </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#companyList').DataTable();
+    });
+</script>
 </body>
 </html>
